@@ -1,12 +1,29 @@
-import { Router } from "express";
+import { Router } from 'express'
+import auth from '../middleware/auth.js'
 
-const router = Router();
+const router = Router()
 
-router.get("/data", (req, res) => {
+const comments = [];
+
+router.get('/data', auth, (req, res) => {
   res.json({
-    message: "Geschützte Daten aus dem Backend",
-    timestamp: new Date().toISOString()
-  });
+    message: 'Geschützte Daten aus dem Backend',
+    timestamp: new Date().toISOString(),
+    claims: req.auth || null,
+  })
+})
+
+router.get('/comments', auth, (req, res) => {
+  res.json({
+    comments,
+  })
 });
 
-export default router;
+router.post('/comments', auth, (req, res) => {
+  const receivedData = req.body
+  console.log('Empfangene Daten zum Speichern:', receivedData)
+  comments.push(receivedData)
+  res.status(201).json({ message: 'Kommentar gespeichert', data: receivedData })
+})
+
+export default router

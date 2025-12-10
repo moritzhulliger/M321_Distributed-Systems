@@ -1,18 +1,21 @@
-import axios from "axios";
+import { expressjwt as jwt } from 'express-jwt'
+import jwksRsa from 'jwks-rsa'
 
+const issuer = 'http://localhost:8080/realms/security-lab'
+const audience = 'account'
 
-export default async function auth(req, res, next) {
-  const authHeader = req.headers.authorization;
+const jwksUri = `${issuer.replace(/\/$/, '')}/protocol/openid-connect/certs`
 
-  if (!authHeader) {
-    return res.status(401).json({ error: "Kein Authorization Header vorhanden" });
-  }
+const authMiddleware = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri,
+  }),
+  audience: audience,
+  issuer: issuer,
+  algorithms: ['RS256'],
+})
 
-  const token = authHeader.replace("Bearer ", "");
-
-  if (!token) {
-    return res.status(401).json({ error: "Kein Token im Authorization Header" });
-  }
-
-  next();
-}
+export default authMiddleware

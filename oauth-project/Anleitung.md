@@ -25,3 +25,5 @@ Web Origins: *
 # Frontend und Backend einrichten
 
 ## Frontend
+
+Verwendet https://authts.github.io/oidc-client-ts/ 

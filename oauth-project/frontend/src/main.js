@@ -1,4 +1,17 @@
 import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
+import Home from './views/Home.vue'
+import Callback from './views/Callback.vue'
 
-createApp(App).mount('#app')
+const routes = [
+	{ path: '/', component: Home },
+	{ path: '/callback', component: Callback },
+]
+
+const router = createRouter({
+	history: createWebHistory(),
+	routes,
+})
+
+createApp(App).use(router).mount('#app')

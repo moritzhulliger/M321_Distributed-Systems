@@ -36,3 +36,25 @@ npm run dev
 ```sh
 npm run build
 ```
+
+## Keycloak / OIDC setup
+
+This project uses `oidc-client-ts` to integrate with Keycloak (or any OpenID Connect provider).
+
+Environment variables (Vite):
+
+- `VITE_OIDC_AUTHORITY` — your Keycloak base URL for the realm, e.g. `http://localhost:8080/auth/realms/myrealm`
+- `VITE_OIDC_CLIENT_ID` — the client id you registered in Keycloak (e.g. `frontend`)
+
+Example (.env.local):
+
+```
+VITE_OIDC_AUTHORITY=http://localhost:8080/auth/realms/myrealm
+VITE_OIDC_CLIENT_ID=frontend
+```
+
+Notes:
+- The client must allow the redirect URI `http://localhost:5173/callback` (adjust port if your dev server runs on a different port).
+- Use the Authorization Code flow (client should be public or confidential with appropriate settings). The app uses `response_type: 'code'` and requests `openid profile email`.
+
+After installing dependencies (`npm install`), run the dev server and click "Login with Keycloak" in the header.
