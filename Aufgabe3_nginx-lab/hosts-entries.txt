@@ -1,0 +1,13 @@
+# Diese Zeilen in eure /etc/hosts (Linux/macOS) bzw.
+# C:\Windows\System32\drivers\etc\hosts (Windows, als Administrator) einfuegen.
+#
+# Damit werden die Domains lokal auf euren eigenen Rechner (=NGINX-Container
+# auf Port 80) aufgeloest, statt echte DNS-Server zu fragen.
+
+127.0.0.1 service-a.local
+127.0.0.1 service-b.local
+127.0.0.1 service-c.local
+
+# Fuer Teil 2 (Load Balancer, euer eigenes Projekt) waehlt ihr selbst eine
+# Domain, z.B.:
+# 127.0.0.1 app.local

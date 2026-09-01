@@ -1,0 +1,54 @@
+networks:
+  lab-net:
+    driver: bridge
+
+services:
+  service-a:
+    build: ./services/service-a
+    container_name: service-a
+    environment:
+      - SERVICE_NAME=Service A
+      - COLOR=#e11d48
+      - PORT=3000
+    networks:
+      - lab-net
+    restart: unless-stopped
+
+  service-b:
+    build: ./services/service-b
+    container_name: service-b
+    environment:
+      - SERVICE_NAME=Service B
+      - COLOR=#2563eb
+      - PORT=3000
+    networks:
+      - lab-net
+    restart: unless-stopped
+
+  service-c:
+    build: ./services/service-c
+    container_name: service-c
+    environment:
+      - SERVICE_NAME=Service C
+      - COLOR=#16a34a
+      - PORT=3000
+    networks:
+      - lab-net
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      # Read-only Mount: eure Konfiguration liegt lokal in ./nginx/conf.d
+      # und wird beim Start bzw. Reload direkt eingelesen.
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    networks:
+      - lab-net
+    depends_on:
+      - service-a
+      - service-b
+      - service-c
+    restart: unless-stopped
