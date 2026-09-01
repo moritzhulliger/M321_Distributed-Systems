@@ -59,7 +59,7 @@ Nutzt folgende Dokumentation: https://docs.nginx.com/nginx/admin-guide/web-serve
 
 ---
 
-## Teil 2: Load Balancer für euer eigenes Projekt (Pflicht)
+## Teil 2: Load Balancer für euer Counter Projekt
 
 **Ziel:** Übertragt das Prinzip aus Teil 1 auf euer **eigenes, bereits
 bestehendes Projekt**, das ebenfalls in drei Containern läuft. Diesmal aber
