@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <title>100 Pokémon</title>
+    <meta charset="UTF-8"/>
+    <title>100 Pokémon</title>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 2rem; }
+        table { border-collapse: collapse; margin-top: 1rem; }
+        th, td { border: 1px solid #ccc; padding: 4px 10px; text-align: left; }
+        .hit  { color: #0a7d28; font-weight: bold; }
+        .miss { color: #b3261e; font-weight: bold; }
+    </style>
 </head>
+
 <body>
-  <h1>100 Pokémon</h1>
-  <div id="grid" class="grid"></div>
-  <script type="module" src="main.js"></script>
+<h1>100 Pokémon</h1>
+<div id="controls">
+    <button id="run">Laden</button>
+    <label><input type="checkbox" id="bypass" /> Cache umgehen (<code>no-cache</code>)</label>
+    <span id="summary"></span>
+</div>
+<div id="grid" class="grid"></div>
+<script type="module" src="main.js"></script>
 </body>
 </html>
