@@ -8,6 +8,5 @@
 127.0.0.1 service-b.local
 127.0.0.1 service-c.local
 
-# Fuer Teil 2 (Load Balancer, euer eigenes Projekt) waehlt ihr selbst eine
-# Domain, z.B.:
-# 127.0.0.1 app.local
+# Fuer Teil 2 wird die Counter-App aus Aufgabe 1 ueber Port 8080 erreicht:
+127.0.0.1 service-counter.local
