@@ -36,6 +36,27 @@ services:
       - lab-net
     restart: unless-stopped
 
+  counter-1:
+    build: ./services/counter
+    container_name: counter-1
+    networks:
+      - lab-net
+    restart: unless-stopped
+
+  counter-2:
+    build: ./services/counter
+    container_name: counter-2
+    networks:
+      - lab-net
+    restart: unless-stopped
+
+  counter-3:
+    build: ./services/counter
+    container_name: counter-3
+    networks:
+      - lab-net
+    restart: unless-stopped
+
   nginx:
     image: nginx:1.27-alpine
     container_name: nginx
@@ -51,4 +72,7 @@ services:
       - service-a
       - service-b
       - service-c
+      - counter-1
+      - counter-2
+      - counter-3
     restart: unless-stopped
