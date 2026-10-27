@@ -2,6 +2,7 @@ import os
 import time
 import random
 import json
+import socket
 import paho.mqtt.client as mqtt
 
 broker = "mosquitto"
@@ -10,9 +11,17 @@ topic = "weather"
 
 station_id = os.getenv("STATION_ID", "WS-XX")
 interval = int(os.getenv("INTERVAL", "5"))
-random
-client = mqtt.Client()
-client.connect(broker, port, 60)
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+client.reconnect_delay_set(min_delay=1, max_delay=30)
+
+while True:
+    try:
+        client.connect(broker, port, 60)
+        client.loop_start()
+        break
+    except (OSError, socket.error) as error:
+        print(f"Broker nicht erreichbar ({error}); neuer Versuch in 5 Sekunden")
+        time.sleep(5)
 
 while True:
     if random.random() < 0.01:

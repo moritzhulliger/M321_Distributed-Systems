@@ -7,6 +7,12 @@ services:
       - "1883:1883"
     volumes:
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    healthcheck:
+      test: ["CMD", "mosquitto_sub", "-h", "localhost", "-t", "$$SYS/broker/version", "-C", "1", "-W", "5"]
+      interval: 5s
+      timeout: 6s
+      retries: 10
+    restart: unless-stopped
 
   station1:
     build:
@@ -15,6 +21,10 @@ services:
     environment:
       - STATION_ID=WS-01
       - INTERVAL=5
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    restart: unless-stopped
 
   station2:
     build:
@@ -23,6 +33,10 @@ services:
     environment:
       - STATION_ID=WS-02
       - INTERVAL=7
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    restart: unless-stopped
 
   station3:
     build:
@@ -31,3 +45,64 @@ services:
     environment:
       - STATION_ID=WS-03
       - INTERVAL=3
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    restart: unless-stopped
+
+  live-display:
+    build: ./services
+    command: ["python", "live_display.py"]
+    environment:
+      - BROKER_HOST=mosquitto
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    restart: unless-stopped
+
+  monitor:
+    build: ./services
+    command: ["python", "monitor.py"]
+    environment:
+      - BROKER_HOST=mosquitto
+      - STATION_IDS=WS-01,WS-02,WS-03
+      - DATABASE_PATH=/data/weather.db
+    volumes:
+      - weather-data:/data
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    restart: unless-stopped
+
+  weather-alerts:
+    build: ./services
+    command: ["python", "alerts.py"]
+    environment:
+      - BROKER_HOST=mosquitto
+      - ALERT_LOG_PATH=/data/alerts.jsonl
+      - FROST_THRESHOLD=0
+      - HEAT_THRESHOLD=30
+      - HUMIDITY_THRESHOLD=85
+    volumes:
+      - weather-data:/data
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+      monitor:
+        condition: service_started
+    restart: unless-stopped
+
+  statistics:
+    build: ./services
+    command: ["python", "statistics.py"]
+    environment:
+      - BROKER_HOST=mosquitto
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+      monitor:
+        condition: service_started
+    restart: unless-stopped
+
+volumes:
+  weather-data:
