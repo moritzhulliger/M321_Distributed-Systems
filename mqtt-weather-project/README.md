@@ -21,3 +21,22 @@ Dieses Projekt simuliert verteilte Wetterstationen, die Messdaten über MQTT an 
 - Abonniere Wetterdaten vom Topic `weather`
 - Speichere die Daten sinnvoll (z. B. JSON-Datei, SQLite)
 - Erstelle einfache Auswertungen (Durchschnitt, Verlauf, usw.)
+
+
+## Testing
+
+```bash
+docker compose up --build -d
+```
+
+
+
+```bash
+docker compose logs -f monitor
+docker compose logs -f alerts
+docker compose exec mosquitto mosquitto_sub -t "weather/#" -v
+```
+
+
+Web:
+"http://localhost:8080"

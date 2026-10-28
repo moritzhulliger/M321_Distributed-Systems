@@ -1,0 +1,41 @@
+<h1>Wetterstationen Live</h1>
+
+<p class="connection" [class.ok]="weather.connected()">
+  {{ weather.connected() ? 'Mit Broker verbunden' : 'Keine Verbindung zum Broker - versuche neu ...' }}
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Station</th>
+      <th>Status</th>
+      <th>Temperatur</th>
+      <th>Luftfeuchtigkeit</th>
+      <th>Letzter Empfang</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (s of weather.stations(); track s.stationId) {
+      <tr>
+        <td>{{ s.stationId }}</td>
+        <td [class]="s.status">{{ s.status }}</td>
+        <td>{{ s.temperature ?? '-' }} °C</td>
+        <td>{{ s.humidity ?? '-' }} %</td>
+        <td>
+          @if (s.received) {
+            {{ s.received | date: 'HH:mm:ss' }} (vor {{ secondsAgo(s.received) }} s)
+          } @else {
+            -
+          }
+        </td>
+      </tr>
+    } @empty {
+      <tr><td colspan="5">Warte auf Daten ...</td></tr>
+    }
+  </tbody>
+</table>
+
+<div class="charts">
+  <div class="card"><canvas #tempCanvas></canvas></div>
+  <div class="card"><canvas #humCanvas></canvas></div>
+</div>
