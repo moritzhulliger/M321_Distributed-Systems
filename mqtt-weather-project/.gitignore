@@ -1,3 +1,11 @@
 alerts/logs/
 monitor/target/
 alerts/target/
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.tfstate.lock.info
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
