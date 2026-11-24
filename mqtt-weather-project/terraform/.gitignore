@@ -1,0 +1,14 @@
+# Lokaler Terraform-Zustand und Provider-Cache (werden bei init/apply neu erzeugt)
+.terraform/
+
+# State enthält Laufzeitdaten und kann sensible Werte enthalten
+*.tfstate
+*.tfstate.*
+
+# Gespeicherte Plan-Dateien und Crash-Logs
+*.tfplan
+tfplan*
+crash.log
+crash.*.log
+
+# .terraform.lock.hcl bleibt absichtlich im Repository (fixiert die Provider-Version)
